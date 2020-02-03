@@ -1,0 +1,23 @@
+--- # Bootstrap Webservers
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: install httpd
+    yum:
+      name: "{{ target_service}}"
+      state: latest
+    - name: create index.html file
+    file:
+      name: /var/www/html/index.html
+      state: touch
+    - name: add web content
+    lineinfile:
+      line: "{{ ansible_hostname }}"
+      path: /var/www/html/index.html
+    - name: start httpd
+    service:
+      name: "{{ target_service }}"
+      state: started
+
+# to run playbook with variable
+# ansible-playbook -i inv bootstrap_webserver.yml -e "target_service=httpd"
