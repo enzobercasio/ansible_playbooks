@@ -1,0 +1,4 @@
+host: phl-42
+datacenter:
+  location: Singapore
+  cab: 13 
