@@ -1,0 +1,31 @@
+ ansible -i inv -b webserver -m yum -a "name=httpd state=latest"
+ ansible -i inv -b webserver -m yum -a "name=httpd state=absent"
+
+ #command
+ ansible localhost -a "touch temp creates=temp"
+ ansible localhost -a "rm -f temp removes=temp"
+ ansible localhost -m shell -a "echo $PATH > pathfile"
+
+ #facts
+ ansible -i inv webserver -m setup | less
+ ansible -i inv webserver -m setup -a "filter=*ipv4*"
+ ansible -i inv webserver -m setup --tree facts
+
+ #files
+ ansible -i inv localhost -m file -a "name=test state=touch"
+ ansible -i inv localhost -m file -a "name=test state=absent"
+ ansible -i inv localhost -b -m file -a "name=/root/test state=touch"
+
+ #lineinfile
+ ansible -i inv localhost -m lineinfile -a "path=/home/ansible/testfile line='this is a line' state=present"
+ ansible -i inv localhost -m lineinfile -a "path=/home/ansible/testfile line='this is another lorenzo' insertbefore='line2'"
+
+ #get_url
+ ansible localhost -m get_url -a "url=http://google.com dest=/home/ansible/google.html"
+
+ #file archive
+ ansible -i inv localhost -m archive -a "path=/home/ansible format=zip dest=/home/ansible/files.zip"
+
+ #user and groups
+ ansible -i inv webserver -b -m user -a "name=super"
+ ansible -i inv webserver -b -m user -a "name=super state=absent remove=yes"
