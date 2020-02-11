@@ -29,3 +29,18 @@
  #user and groups
  ansible -i inv webserver -b -m user -a "name=super"
  ansible -i inv webserver -b -m user -a "name=super state=absent remove=yes"
+
+ ansible -i inv webserver -b -m group -a "name=admin"
+ ansible -i inv webserver -b -m user -a "name=super group=admin"
+
+ ansible -i inv webserver -b -m user -a "name=super group=wheel"
+ ansible -i inv webserver -b -m group -a "name=admin state=absent"
+ 
+ #software and daemons
+ ansible -i inv webserver -b -m package -a "name=httpd state=latest"
+ ansible -i inv webserver -b -m package -a "name=httpd state=absent"
+
+ ansible -i inv webserver -b -m yum -a "name=python3 state=latest"
+ 
+ ansible -i inv webserver -b -m service -a "name=httpd state=started"
+ ansible -i inv webserver -b -m service -a "name=httpd"
